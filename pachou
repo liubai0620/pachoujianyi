@@ -1,0 +1,24 @@
+mport requests
+import re
+import time
+import pandas as pd
+from tqdm import tqdm
+
+
+Cookie = {"Cookie":'M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D231522type%253D1%2526t%253D10%2526q%253D%2523%25E6%2596%25B0%25E5%2586%25A0%25E8%2582%25BA%25E7%2582%258E%2523%26fid%3D231522type%253D1%2526q%253D%2523%25E6%2596%25B0%25E5%2586%25A0%25E8%2582%25BA%25E7%2582%258E%2523%26uicode%3D10000011; expires=Fri, 22-Jan-2021 06:17:28 GMT; Max-Age=600; path=/; domain=.weibo.cn; HttpOnly'}
+head = {'User-Agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36 Edg/87.0.664.75'}
+ur1 = 'https://m.weibo.cn/api/container/getIndex?containerid=231522type%3D1%26q%3D%23%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%23&page_type=searchall&page=2'
+for j in tqdm(range(1,10)):
+    ur1 = 'https://m.weibo.cn/api/container/getIndex?containerid=231522type%3D1%26t%3D10%26q%3D%23%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%23&extparam=%23%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%23&luicode=10000011&lfid=100103type%3D38%26q%3D%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%26t%3D0&page_type=searchall&page=2'
+    time.sleep(4)
+    html = requests.get(ur1,headers = head, cookies = Cookie)
+    for i in html.json()['data']['cards']:
+        blog = i['mblog']
+        date = blog['created_at']
+        text = blog['text']
+        text = ''.join(re.findall('[\u4e00-\u9fa5]',text))
+        zhuanfa = blog['reposts_count']
+        comment = blog['comments_count']
+        attitudes = blog['attitudes_count']
+        print(date,text,zhuanfa,attitudes)
+
