@@ -1,0 +1,72 @@
+import jieba
+from math import *
+
+txt = open("./4.2.txt", "r", encoding='utf-8').read()
+words = jieba.lcut(txt)  # 使用精确模式对文本进行分词
+counts = {}  # 通过键值对的形式存储词语及其出现的次数
+
+# for word in words:
+#     if word=="仇恨" or word=="心急如焚" or word=="方寸大乱" or word=="无语" or word=="我靠":
+#         counts[0]=counts.get(0,0)+1
+#     if word=="寒心" or word=="失望" or word=="生气":
+#         counts[1]=counts.get(1,0)+1
+#     if word=="愤怒" or word=="窝火" or word=="恐慌" or word=="害人害己" or word=="叹气" or word=="":
+#         counts[2]=counts.get(2,0)+1
+#     if word=="悲伤"  or word=="心痛"  or word=="惊心动魄"  or word=="难受"  or word=="害怕"  or word=="沉重"  or word=="吓人" or word=="刻不容缓":
+#         counts[3]=counts.get(3,0)+1
+#     if word=="心酸"  or word=="惨然"  or word=="费解"  or word=="恐慌"  or word=="危险"  or word=="紧迫"  or word=="严峻" or word=="告急" or word=="恐慌" or word=="惶恐" :
+#         counts[4]=counts.get(4,0)+1
+#     if word=="忧虑"  or word=="担心"  or word=="焦虑"  or word=="坚决"  or word=="奇怪" :
+#         counts[5]=counts.get(5,0)+1
+#     if word=="祝福"  or word=="平静"  or word=="心安"  or word=="稳定"  or word=="踏实"  or word=="安心"  or word=="感谢":
+#         counts[6]=counts.get(6,0)+1
+#     if word=="加油"  or word=="振作"  or word=="振奋"  or word=="加油"  or word==""  or word=="积极":
+#         counts[7]=counts.get(7,0)+1
+#     if word=="开心"  or word=="快乐"  or word=="激动"  or word=="幸好"  or word=="感动"  or word=="" :
+#         counts[8]=counts.get(8,0)+1
+#     if word=="幸福":
+#         counts[9]=counts.get(9,0)+1
+#     if word=="骄傲":
+#         counts[10]=counts.get(10,0)+1
+#     if word=="高兴":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word=="加油":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word == "温暖":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word=="加油":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word == "🤮":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word == "":
+#         counts[word] = counts.get(word, 0) + 1
+#     if word == "":
+#         counts[word] = counts.get(word, 0) + 1
+#
+#     # "# 遍历所有词语，每出现一次其对应的值加 1
+for word in words:
+    if len(word) == 1:
+        continue
+    else:
+        counts[word] = counts.get(word, 0) + 1
+
+items = list(counts.items())  # 将键值对转换成列表
+items.sort(key=lambda x: x[1], reverse=True)  # 根据词语出现的次数进行从大到小排序
+
+
+sum=0
+for k in range(len(items)):
+    word,count=items[k]
+    sum+=count
+print(sum)
+
+
+coment=0
+for i in range(50):
+    word, count = items[i]
+    if(word=="来自"):
+        coment=counts[word]
+for i in range(50):
+    word, count = items[i]
+
+    print("{0:<5}{1:>5}".format(word, count)+"  TF:"+str(count/sum)+"  IDF:"+str(log(coment/count,2)))
